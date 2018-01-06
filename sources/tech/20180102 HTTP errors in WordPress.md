@@ -1,19 +1,28 @@
-HTTP errors in WordPress
+WordPress 中的HTTP错误
 ======
 ![http error wordpress][1]
 
+我们会向你展示，如何修复WordPress中的HTTP错误(在Linux VPS中)。 下面列出的是WordPress用户遇到的最常见的HTTP错误，我们的调查侧重于如何发现问题以及解决它们。
+
 We'll show you, how to fix HTTP errors in WordPress, on a Linux VPS. Listed below are the most common HTTP errors in WordPress, experienced by WordPress users, and our suggestions on how to investigate and fix them.
 
-### 1\. Fix HTTP error in WordPress when uploading images
 
+### 1\. 修复在上传图像时出现的HTTP错误
+
+如果你在你的WordPress网页上传图像时出现错误，这也许是因为你服务器上PHP配置错误导致的，例如存储空间不足或者其他原因。
 If you get an error when uploading an image to your WordPress based site, it may be due to PHP configuration settings on your server, like insufficient memory limit or so.
 
+用如下命令查找php配置文件
+
 Locate the php configuration file using the following command:
+
 ```
 #php -i | grep php.ini
 Configuration File (php.ini) Path => /etc
 Loaded Configuration File => /etc/php.ini
 ```
+
+根据输出，php配置文件位于 '/etc'文件夹下。编辑 '/etc/php.ini'文件，找出下列行，并按照下面的例子修改其中的值
 
 According to the output, the PHP configuration file is located in the '/etc' directory, so edit the '/etc/php.ini' file, find the lines below and modify them with these values:
 ```
@@ -27,9 +36,14 @@ max_input_time 300
 memory_limit = 128M
 ```
 
+当然如果你不习惯使用vi文本编辑器，你可以选用自己喜欢的。
 Of course if you are unfamiliar with the vi text editor, use your favorite one.
 
+不要忘记重启你的网页服务器来让改动生效。
+
 Do not forget to restart your web server for the changes to take effect.
+
+如果你在安装的网页服务器是apache,你可能需要使用 .htaccess文件。首先，找到 .htaccess 文件。它会在WordPress安装路径的根文件夹下。如果没有 .htaccess文件，手动创建一个，然后加入如下内容:
 
 If the web server installed on your server is Apache, you may use .htaccess. First, locate the .htaccess file. It should be in the document root directory of the WordPress installation. If there is no .htaccess file, create one, then add the following content:
 ```
@@ -52,7 +66,7 @@ RewriteRule . /index.php [L]
 </IfModule>
 # END WordPress
 ```
-
+如果你使用的网页服务器是nginx,
 If you are using nginx, configure the nginx server block about your WordPress instance. It should look something like the example below:
 ```
 server {
