@@ -2,19 +2,18 @@ WordPress 中的HTTP错误
 ======
 ![http error wordpress][1]
 
-我们会向你展示，如何修复WordPress中的HTTP错误(在Linux VPS中)。 下面列出的是WordPress用户遇到的最常见的HTTP错误，我们的调查侧重于如何发现问题以及解决它们。
+我们会向你介绍，如何修复WordPress中的HTTP错误(在Linux VPS上)。 下面列出了WordPress用户遇到的最常见的HTTP错误，我们的建议侧重于如何发现错误原因以及解决方法。
 
-We'll show you, how to fix HTTP errors in WordPress, on a Linux VPS. Listed below are the most common HTTP errors in WordPress, experienced by WordPress users, and our suggestions on how to investigate and fix them.
+
 
 
 ### 1\. 修复在上传图像时出现的HTTP错误
 
-如果你在你的WordPress网页上传图像时出现错误，这也许是因为你服务器上PHP配置错误导致的，例如存储空间不足或者其他原因。
-If you get an error when uploading an image to your WordPress based site, it may be due to PHP configuration settings on your server, like insufficient memory limit or so.
+如果你在基于WordPress的网页中上传图像时出现错误，这也许是因为服务器上PHP配置，例如存储空间不足或者其他配置问题造成的。
 
-用如下命令查找php配置文件
 
-Locate the php configuration file using the following command:
+用如下命令查找php配置文件：
+
 
 ```
 #php -i | grep php.ini
@@ -22,9 +21,9 @@ Configuration File (php.ini) Path => /etc
 Loaded Configuration File => /etc/php.ini
 ```
 
-根据输出，php配置文件位于 '/etc'文件夹下。编辑 '/etc/php.ini'文件，找出下列行，并按照下面的例子修改其中的值
+根据输出结果，php配置文件位于 '/etc'文件夹下。编辑 '/etc/php.ini'文件，找出下列行，并按照下面的例子修改其中相对应的值:
 
-According to the output, the PHP configuration file is located in the '/etc' directory, so edit the '/etc/php.ini' file, find the lines below and modify them with these values:
+
 ```
 vi /etc/php.ini
 ```
@@ -36,16 +35,15 @@ max_input_time 300
 memory_limit = 128M
 ```
 
-当然如果你不习惯使用vi文本编辑器，你可以选用自己喜欢的。
-Of course if you are unfamiliar with the vi text editor, use your favorite one.
+当然，如果你不习惯使用vi文本编辑器，你可以选用自己喜欢的。
+
 
 不要忘记重启你的网页服务器来让改动生效。
 
-Do not forget to restart your web server for the changes to take effect.
 
-如果你在安装的网页服务器是apache,你可能需要使用 .htaccess文件。首先，找到 .htaccess 文件。它会在WordPress安装路径的根文件夹下。如果没有 .htaccess文件，手动创建一个，然后加入如下内容:
+如果你安装的网页服务器是Apache,你需要使用 .htaccess文件。首先，找到 .htaccess 文件。它位于WordPress安装路径的根文件夹下。如果没有找到 .htaccess文件，需要自己手动创建一个，然后加入如下内容:
 
-If the web server installed on your server is Apache, you may use .htaccess. First, locate the .htaccess file. It should be in the document root directory of the WordPress installation. If there is no .htaccess file, create one, then add the following content:
+
 ```
 vi /www/html/path_to_wordpress/.htaccess
 ```
@@ -66,8 +64,8 @@ RewriteRule . /index.php [L]
 </IfModule>
 # END WordPress
 ```
-如果你使用的网页服务器是nginx,
-If you are using nginx, configure the nginx server block about your WordPress instance. It should look something like the example below:
+如果你使用的网页服务器是nginx,在WordPress实例中具体配置nginx服务器的设置。详细配置和下面的例子相似:
+
 ```
 server {
 
@@ -109,29 +107,36 @@ log_not_found off;
 }
 ```
 
-Depending on the PHP configuration, you may need to replace 'fastcgi_pass 127.0.0.1:9000;' with 'fastcgi_pass unix:/var/run/php7-fpm.sock;' or so.
+根据自己的PHP配置，你需要将 'fastcgi_pass 127.0.0.1:9000;' 用类似于 'fastcgi_pass unix:/var/run/php7-fpm.sock;' 替换掉（依照实际连接方式）
 
-Restart nginx service for the changes to take effect.
 
-### 2\. Fix HTTP error in WordPress due to incorrect file permissions
+重启nginx服务来使改动生效。
 
-If you get an unexpected HTTP error in WordPress, it may be due to incorrect file permissions, so set a proper ownership of your WordPress files and directories:
+
+
+### 2\. 修复因为不恰当的文件权限而产生的HTTP错误
+
+如果你在WordPress中出现一个意外错误，也许是因为不恰当的文件权限导致的，所以需要给WordPress文件和文件夹设置一个正确的权限：
+
 ```
 chown www-data:www-data -R /var/www/html/path_to_wordpress/
 ```
 
-Replace 'www-data' with the actual web server user, and '/var/www/html/path_to_wordpress' with the actual path of the WordPress installation.
+将 'www-data' 替换成实际的网页服务器用户，将 '/var/www/html/path_to_wordpress' 换成WordPress的实际安装路径。
 
-### 3\. Fix HTTP error in WordPress due to memory limit
 
-The PHP memory_limit value can be set by adding this to your wp-config.php file:
+### 3\. 修复因为内存不足而产生的HTTP错误
+
+你可以通过在wp-config.php中添加如下内容来设置PHP的最大内存限制：
+
 ```
  define('WP_MEMORY_LIMIT', '128MB');
 ```
 
-### 4\. Fix HTTP error in WordPress due to misconfiguration of PHP.INI
+### 4\. 修复因为PHP.INI文件错误配置而产生的HTTP错误
 
-Edit the main PHP configuration file and locate the line with the content 'cgi.fix_pathinfo' . This will be commented by default and set to 1. Uncomment the line (remove the semi-colon) and change the value from 1 to 0. You may also want to change the 'date.timezone' PHP setting, so edit the PHP configuration file and modify this setting to 'date.timezone = US/Central' (or whatever your timezone is).
+编辑PHP配置主文件，然后找到 'cgi.fix_pathinfo' 这一行。 这一行内容默认情况下是被注释掉的，默认值为1。取消这一行的注释(删掉这一行最前面的分号)，然后将1改为0.同时需要修改 'date.timezone' 这一PHP设置，再次编辑 PHP 配置文件并将这一选项改成 'date.timezone = US/Central' (或者将等号后内容改为你所在的时区)
+
 ```
  vi /etc/php.ini
 ```
@@ -140,9 +145,10 @@ Edit the main PHP configuration file and locate the line with the content 'cgi.f
  date.timezone = America/New_York
 ```
 
-### 5. Fix HTTP error in WordPress due to Apache mod_security modul
+### 5. 修复因为Apache mod_security模块而产生的HTTP错误
 
-If you are using the Apache mod_security module, it might be causing problems. Try to disable it to see if that is the problem by adding the following lines in .htaccess:
+如果你在使用 Apache mod_security 模块，这可能也会引起问题。试着禁用这一模块，确认是否因为在 .htaccess 文件中加入如下内容而引起了问题：
+
 ```
 <IfModule mod_security.c>
 SecFilterEngine Off
@@ -150,19 +156,23 @@ SecFilterScanPOST Off
 </IfModule>
 ```
 
-### 6. Fix HTTP error in WordPress due to problematic plugin or theme
+### 6.  修复因为有问题的插件/主题而产生的HTTP错误
 
-Some plugins and/or themes may cause HTTP errors and other problems in WordPress. You can try to disable the problematic plugins/themes, or temporarily disable all the plugins. If you have phpMyAdmin, use it to deactivate all plugins:
-Locate the table wp_options, under the option_name column (field) find the 'active_plugins' row and change the option_value field to: a:0:{}
+一些插件或主题也会导致HTTP错误以及其他问题。你可以首先禁用有问题的插件/主题，或暂时禁用所有WordPress插件。如果你有phpMyAdmin，使用它来禁用所有插件：在其中找到 wp_options这一表格，在 option_name 这一列中找到 'active_plugins' 这一行，然后将 option_value 改为 ：a:0:{}
 
-Or, temporarily rename your plugins directory via SSH using the following command:
+
+或者用以下命令通过SSH重命名插件所在文件夹：
+
 ```
  mv /www/html/path_to_wordpress/wp-content/plugins /www/html/path_to_wordpress/wp-content/plugins.old
 ```
 
-In general, HTTP errors are logged in the web server log files, so a good starting point is to check the web server error log on your server.
+通常情况下，HTTP错误会被记录在网页服务器的日志文件中，所以寻找错误时一个很好的切入点就是查看服务器日志。
 
-You don't have to Fix HTTP errors in WordPress, if you use one of our [WordPress VPS Hosting][2] services, in which case you can simply ask our expert Linux admins to **fix HTTP errors in WordPress** for you. They are available 24 ×7 and will take care of your request immediately.
+
+如果你在使用WordPress VPS主机服务的话，你不需要自己去修复WordPress中出现的HTTP错误。你只要让你的Linux管理员来处理它们，他们24小时在线并且会立刻开始着手解决你的问题。
+
+
 
 --------------------------------------------------------------------------------
 
