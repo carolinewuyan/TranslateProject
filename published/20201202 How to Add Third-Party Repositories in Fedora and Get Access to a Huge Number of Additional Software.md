@@ -7,18 +7,18 @@
 [#]: via: (https://itsfoss.com/fedora-third-party-repos/)
 [#]: author: (John Paul https://itsfoss.com/author/john/)
 
-如何在 Fedora 中添加第三方存储库以访问大量附加软件
+如何在 Fedora 中添加第三方仓库以访问大量附加软件
 ======
 
 ![](https://img.linux.net.cn/data/attachment/album/202012/08/074323tkjpr2499rtjnjq0.jpg)
 
 在你安装 Fedora 后。你可能会发现你想要安装和使用的一些软件在软件商店中找不到。出于一些原因，这些软件包不能出现在 Fedora 存储库中。
 
-不用担心，我将告诉你如何为 Fedora 添加第三方存储库来使这些软件包可使用。
+不用担心，我将告诉你如何为 Fedora 添加第三方仓库来使这些软件包可使用。
 
-### 在 Fedora 中的第三方存储库是什么？
+### 在 Fedora 中的第三方仓库是什么？
 
-操作系统开发人员通常会决定哪些软件包可以在其存储库中使用，哪些软件包不可以在其存储库中使用。Fedora 也是如此。依据 [Fedora 文档][1] ，第三方存储库包含有 “拥有更为宽松的许可政策，并提供 Fedora 因各种原因所排除软件包” 的软件包。
+操作系统开发人员通常会决定哪些软件包可以在其存储库中使用，哪些软件包不可以在其存储库中使用。Fedora 也是如此。依据 [Fedora 文档][1] ，第三方仓库包含有 “拥有更为宽松的许可政策，并提供 Fedora 因各种原因所排除软件包” 的软件包。
 
 Fedora 强制执行下面的 [准则][2] ，当它打包软件包时:
 
@@ -59,7 +59,7 @@ RPM Fusion 建议先安装 free 存储库。因此，单击针对你 Fedora 版�
 
 在安装过程完成后，返回并使用相同的步骤安装 nonfree 存储库。
 
-### 启用 Fedora 的第三方存储库
+### 启用 Fedora 的第三方仓库
 
 Fedora 最近开始提供它自己的 [第三方应用程序存储库][7] 。在这个存储库中 [可使用的应用程序的数量][8] 是非常少的。你可以 [使用它来在 Fedora 上安装 Chrome 浏览器][9] 。除 Chrome 外，它也包含 Adobe Brackets、Atom、Steam、Vivaldi、Opera 等应用程序。
 
@@ -67,7 +67,7 @@ Fedora 最近开始提供它自己的 [第三方应用程序存储库][7] 。在
 
 #### 方法 1：命令行方法
 
-为启用 Fedora 的第三方存储库，输入下面的命令到你的终端中：
+为启用 Fedora 的第三方仓库，输入下面的命令到你的终端中：
 
 ```
 sudo dnf install fedora-workstation-repositories
@@ -83,9 +83,9 @@ sudo dnf install fedora-workstation-repositories
 
 ![Gnome 软件的菜单][10]
 
-在软件存储库窗口中，你将在其顶部看到写着 “第三方存储库” 字样的部分。单击“安装”按钮。当你被提示时，输入你的密码。
+在软件存储库窗口中，你将在其顶部看到写着 “第三方仓库” 字样的部分。单击“安装”按钮。当你被提示时，输入你的密码。
 
-![Fedora 第三方存储库安装][11]
+![Fedora 第三方仓库安装][11]
 
 随着这些附加存储库的启用，你可以安装软件到你的系统当中。你可以从软件中心管理器或使用 DNF 软件包管理器来轻松地安装它们。
 
@@ -98,7 +98,7 @@ via: https://itsfoss.com/fedora-third-party-repos/
 作者：[John Paul][a]
 选题：[lujun9972][b]
 译者：[robsean](https://github.com/robsean)
-校对：[wxy](https://github.com/wxy)
+校对：[wxy](https://github.com/wxy),[FineFan](https://github.com/FineFan)
 
 本文由 [LCTT](https://github.com/LCTT/TranslateProject) 原创编译，[Linux中国](https://linux.cn/) 荣誉推出
 
